@@ -105,6 +105,21 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+  
+  filebeat:
+    profiles:
+      - filebeat
+    build:
+      context: filebeat/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+      volumes:
+        - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro,Z
+        - /root/server/run/log:/usr/share/filebeat/logs:ro,Z
+      environment:
+        IP: ${IP} #需要提前将IP写入到.env文件中或者 `$ IP=$(sh /path/export_ip.sh) docker compose up filebeat`
+      networks:
+        - elk
 
 networks:
   elk:

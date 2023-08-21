@@ -1,0 +1,1 @@
+docker run --rm --privileged -it --name docker-test-logstash-1 -v ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro -v ./logstash/pipeline:/usr/share/logstash/pipeline:ro -e LS_JAVA_OPTS:"-Xms256m -Xmx256m" -p 5044:5044 -p 50000:50000 docker.elastic.co/logstash/logstash:8.9.0

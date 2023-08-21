@@ -1,0 +1,70 @@
+
+filebeat.inputs:
+- type: log
+  #fields_under_root: true #决定字段是加在event下，还是成为跟字段。8.9.0版本好像不起作用了？
+  #过滤需要收集的日志内容，include_lines的优先级要高于exclude_lines
+  #exclude_lines: ['^DBG']
+  #include_lines: ['^ERR', '^WARN']
+  enabled: true
+  paths:
+    - /usr/share/filebeat/logs/*
+  #多行日志聚合
+  multiline.pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}' #匹配行需要的模式
+  multiline.negate: true #定义进行匹配false还是反选true
+  multiline.match: after #匹配值向前before还是向后after组合
+
+processors:
+- dissect:
+    tokenizer: "%{log.timestamp}[%{service}] %{message}"
+    field: "message"
+    target_prefix: ""
+    ignore_failure: true
+    overwrite_keys: true
+- timestamp:
+    field: log.timestamp
+    target_field: "@timestamp"
+    #timezone: "Asia/Shanghai" #会将时间作时区转换
+    #timezone: "UTC"
+    layouts:
+      - "2006-01-02 15:04:05"
+
+#想从log.file.path中提取文件名  失败！！！
+#- dissect:
+  #tokenizer: "/%{folder}/%{node}.%{extension}"
+  #tokenizer: "/%{foolder}/%{+folder}/%{filename}.%{extension}"
+  #tokenizer: "^/w+%{filename}"
+  #field: "log.file.path"
+  #target_prefix: ""
+
+      #- replace:
+      #    fields: 
+      #      - field: "log.file.path"
+      #        #pattern: "/(.+)/([^/]+)$"
+      #        #replacement: "/${2}"
+      #    ignore_missing: false
+      #    fail_on_error: true
+
+        #- add_fields:
+        #    target: ""
+        #    fields:
+        #      #node: "${log.file.path}"
+        #      #test: "${event}"
+        #      #message: "${host}"
+
+- add_fields:
+    target: ""
+    fields:
+      ip: ${IP} #${ENV}用来获取环境变量
+- drop_fields:
+  #when:
+  #condition
+    fields: ["host", "input", "agent", "ecs"]
+    ignore_missing: false
+  
+
+
+output.logstash:
+  hosts: ["172.19.243.64:5044"]
+#调试 控制台输出
+#output.console:
+#  pretty: true
