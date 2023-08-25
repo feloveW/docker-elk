@@ -32,11 +32,18 @@ Other available stack variants:
 ## tl;dr
 
 ```sh
-docker-compose up setup
+# 配置elastic search所需要的环境
+docker compose up setup
 ```
 
 ```sh
-docker-compose up
+# 启动elk容器组
+docker compose up
+```
+
+```sh
+# 启动filebeat，docker-compose.yml中需要修改volume映射的日志文件目录
+docker compose up filebeat
 ```
 
 ![Animated demo](https://user-images.githubusercontent.com/3299086/155972072-0c89d6db-707a-47a1-818b-5f976565f95a.gif)
