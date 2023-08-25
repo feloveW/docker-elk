@@ -1,3 +1,29 @@
+#说明
+
+```sh
+# 配置elastic search所需要的环境
+docker compose up setup
+```
+
+```sh
+# 启动elk容器组, 如果要重置生成的日志数据，需要删除相应的docker volume
+docker compose up
+```
+
+```sh
+# 启动filebeat，docker-compose.yml中需要修改volume映射的日志文件目录
+docker compose up filebeat
+```
+
+
+
+
+
+
+
+
+
+
 # Elastic stack (ELK) on Docker
 
 [![Elastic Stack version](https://img.shields.io/badge/Elastic%20Stack-8.9.1-00bfb3?style=flat&logo=elastic-stack)](https://www.elastic.co/blog/category/releases)
@@ -29,22 +55,7 @@ Other available stack variants:
 
 ---
 
-## tl;dr
 
-```sh
-# 配置elastic search所需要的环境
-docker compose up setup
-```
-
-```sh
-# 启动elk容器组
-docker compose up
-```
-
-```sh
-# 启动filebeat，docker-compose.yml中需要修改volume映射的日志文件目录
-docker compose up filebeat
-```
 
 ![Animated demo](https://user-images.githubusercontent.com/3299086/155972072-0c89d6db-707a-47a1-818b-5f976565f95a.gif)
 
