@@ -23,7 +23,7 @@ processors:
 - timestamp:
     field: log.timestamp
     target_field: "@timestamp"
-    #timezone: "Asia/Shanghai" #会将时间作时区转换
+    timezone: "Asia/Shanghai" #会将时间作时区转换
     #timezone: "UTC"
     layouts:
       - "2006-01-02 15:04:05"
@@ -63,6 +63,7 @@ processors:
   
 
 
+#输出到logstash
 output.logstash:
   hosts: ["172.19.243.64:5044"]
 #调试 控制台输出
